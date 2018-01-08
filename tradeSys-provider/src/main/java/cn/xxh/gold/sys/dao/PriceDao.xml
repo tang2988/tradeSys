@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.xxh.gold.sys.dao.PriceDao">
+
+	<select id="findPriceAndPricetime" resultType="cn.xxh.gold.vo.PriceVo" >
+		select * from t_getprice ORDER BY priceDate desc
+
+	</select>
+	
+	<insert id="addPrice">
+		insert into t_getprice(price,priceDate) VALUES(#{price},now())   
+	
+	</insert>
+	
+
+	
+
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.xxh.gold.sys.dao.AccountDao">
+
+	<select id="findAccountByUserId" resultType="cn.xxh.gold.sys.entity.Account" >
+		select * from t_account	 where userId = #{userId}
+	</select>
+	
+	
+
+	<update id="modifyAccountbalance">
+		update t_account SET Accountbalance=#{accountbalance} where UserId = #{userId}
+		
+	</update>
+	
+	
+	<update id="modifyAccountbalanceAndFrozenCapital">
+		UPDATE t_account SET Accountbalance=#{accountbalance},FrozenCapital=#{frozenCapital} WHERE userId=#{userId}
+		
+	</update>
+
+	<update id="unfreeze" >
+		update t_account set FrozenCapital=FrozenCapital-#{withdrawdMoneny},Accountbalance=Accountbalance+#{withdrawdMoneny} WHERE userId = #{userId}
+	</update>
+
+	<update id="AuditPassedAndSuccess">
+	
+		update t_withdrawalform SET rechargeStatus = #{rechargeStatus},succeedtime=#{succeedtime},withdrawdMoneny=withdrawdMoneny-#{withdrawdMoneny} WHERE withdrawalId = #{withdrawalId}
+		
+	</update>
+	
+	<update id="unfreezeExpenditureBalance">
+	
+		update t_account SET FrozenCapital=FrozenCapital-#{withdrawdMoneny} where userid = #{userId}
+		
+	</update>
+
+</mapper>

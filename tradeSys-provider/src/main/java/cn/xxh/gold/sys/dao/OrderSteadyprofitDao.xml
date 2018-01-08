@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.xxh.gold.sys.dao.OrderSteadyprofitDao">
+
+	<insert id="Addorder" parameterType="cn.xxh.gold.sys.entity.OrderSteadyprofit"
+		keyProperty="orderId" useGeneratedKeys="true">
+		INSERT INTO
+		t_ordersteadyprofit(productId,orderTime,paymentMethod,orderPrice,totalOrder,buyWeight,interestRate,profit,orderStatus,userId)
+		VALUES(#{productId},#{orderTime},#{paymentMethod},#{orderPrice},#{totalOrder},#{buyWeight},#{interestRate},#{profit},#{OrderStatus},#{userId})
+
+	</insert>
+
+	<update id="ModifyOrderStatus">
+		update t_ordersteadyprofit SET orderStatus =
+		#{OrderStatus},orderTime = #{orderTime} where orderId = #{orderId}
+
+	</update>
+
+	<update id="ModifyOrderStatusAndPaymentTime">
+		update t_ordersteadyprofit SET orderStatus =
+		#{OrderStatus},paymentTime = #{paymentTime} where orderId = #{orderId}
+
+	</update>
+
+	<update id="CancelOrder">
+		update t_ordersteadyprofit SET orderStatus =
+		#{OrderStatus} where orderId = #{orderId}
+	</update>
+
+
+	<update id="PaymentlOrder">
+		update t_ordersteadyprofit SET orderStatus =
+		#{OrderStatus} where orderId = #{orderId}
+	</update>
+
+	<update id="CarryInterest">
+		update t_ordersteadyprofit SET interestTime =
+		#{interestTime},ceaseDay =
+		#{ceaseDay},cashBackDay =
+		#{cashBackDay},orderStatus = #{OrderStatus}
+		WHERE orderId = #{orderId}
+
+	</update>
+
+	<update id="Overtime">
+		update t_ordersteadyprofit SET orderStatus =
+		#{OrderStatus} where orderId = #{orderId}
+	</update>
+
+	<select id="findByOrderId" resultType="cn.xxh.gold.sys.entity.OrderSteadyprofit">
+		select * from
+		t_ordersteadyprofit where orderId = #{orderId}
+	</select>
+
+	<select id="findByPageCount" resultType="java.lang.Long">
+		select count(1) from
+		t_ordersteadyprofit
+	</select>
+	<select id="findByPage" resultType="cn.xxh.gold.sys.entity.OrderSteadyprofit">
+		select * from t_ordersteadyprofit
+		<if test="sortOrderStr!=''">
+			#{sortOrderStr}
+		</if>
+		LIMIT #{offset},#{pagesize}
+	</select>
+
+
+	<select id="findNoPayOrders" resultType="cn.xxh.gold.sys.entity.OrderSteadyprofit">
+		select * from
+		t_ordersteadyprofit where orderStatus=10
+	</select>
+
+	<select id="findOrderAndPrductprofitUserId" resultType="cn.xxh.gold.vo.OrderAndProductVo">
+		SELECT
+		t_ordersteadyprofit.orderId,
+		t_ordersteadyprofit.orderTime,
+		t_productprofitandloss.productName,
+		t_productprofitandloss.ExpectedAnnualizedInterestRate,
+		t_ordersteadyprofit.buyWeight,
+		t_ordersteadyprofit.profit,
+		t_ordersteadyprofit.orderStatus
+		FROM
+		t_ordersteadyprofit
+		INNER JOIN
+		t_productprofitandloss ON t_productprofitandloss.productId =
+		t_ordersteadyprofit.productId
+		WHERE userId =#{userId} ORDER BY orderId
+		DESC <!-- LIMIT 1,3 -->
+
+	</select>
+
+
+	<select id="OrderAndProductprofitUserIdAndOrderId" resultType="cn.xxh.gold.vo.OrderProductVo">
+		SELECT
+		t_productprofitandloss.productName,
+		t_ordersteadyprofit.orderPrice,
+		t_ordersteadyprofit.orderId,
+		t_ordersteadyprofit.totalOrder,
+		t_ordersteadyprofit.orderTime,
+		t_ordersteadyprofit.buyWeight,
+		t_ordersteadyprofit.paymentTime,
+		t_ordersteadyprofit.interestRate,
+		t_ordersteadyprofit.ceaseDay,
+		t_ordersteadyprofit.interestTime,
+		t_ordersteadyprofit.profit,
+		t_ordersteadyprofit.paymentMethod,
+		t_ordersteadyprofit.orderStatus
+		FROM
+		t_ordersteadyprofit
+		INNER JOIN t_productprofitandloss ON
+		t_productprofitandloss.productId = t_ordersteadyprofit.productId
+		WHERE
+		userId = #{userId}
+		AND orderId = #{orderId}
+	</select>
+
+	<select id="findCarryInterestOrders" resultType="cn.xxh.gold.sys.entity.OrderSteadyprofit">
+		select * from
+		t_ordersteadyprofit where orderStatus=20
+	</select>
+
+	<select id="findPaymentOrders" resultType="cn.xxh.gold.sys.entity.OrderSteadyprofit">
+		select * from
+		t_ordersteadyprofit where orderStatus=30
+	</select>
+
+	<select id="findchaoshi" resultType="cn.xxh.gold.sys.entity.OrderSteadyprofit">
+		select * from
+		t_ordersteadyprofit where orderStatus=40
+	</select>
+	
+	
+	<select id="tableOrderAndproductAndOrderId" resultType="cn.xxh.gold.vo.TableOrderAndproductAndOrderIdVo">
+		SELECT
+	t_ordersteadyprofit.totalOrder,
+	t_ordersteadyprofit.buyWeight,
+	t_productprofitandloss.productName,
+	t_productprofitandloss.ExpectedAnnualizedInterestRate,
+	t_ordersteadyprofit.profit
+FROM
+	t_ordersteadyprofit
+INNER JOIN t_productprofitandloss ON t_ordersteadyprofit.productId = t_productprofitandloss.productId
+ WHERE  orderId = #{orderId}
+	</select>
+
+</mapper>

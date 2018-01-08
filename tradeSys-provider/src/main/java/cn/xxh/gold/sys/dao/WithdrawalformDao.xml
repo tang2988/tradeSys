@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.xxh.gold.sys.dao.WithdrawalformDao">
+
+	<insert id="addwithdrawalform" parameterType="cn.xxh.gold.sys.entity.Withdrawalform" keyProperty="withdrawalId" useGeneratedKeys="true">
+		INSERT INTO
+		t_withdrawalform
+		(rechargeStatus,withdrawdMoneny,applyfortime,succeedtime,errortime,UserId)VALUES(#{rechargeStatus},#{withdrawdMoneny},#{applyfortime},#{succeedtime},#{errortime},#{UserId})
+	</insert>
+
+	<select id="findTopuprechargePage" resultType="cn.xxh.gold.sys.entity.Withdrawalform">
+		select * from t_withdrawalform LIMIT #{offset},#{pagesize}
+	</select>
+	
+	<select id="findCount" resultType="java.lang.Long">
+		select count(1) from t_withdrawalform
+	</select>
+	
+	<update id="updateWithdrawalform">
+		update t_withdrawalform SET rechargeStatus=#{rechargeStatus},errortime=#{errortime};
+	</update>
+	
+	<select id="findWithdrawalformByUserId" resultType="cn.xxh.gold.vo.WithdrawalformVo" >
+		select * from t_withdrawalform	where withdrawalId = #{withdrawalId}
+	</select>
+	
+
+</mapper>

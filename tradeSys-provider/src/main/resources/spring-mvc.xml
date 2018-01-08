@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+     <!-- 配置 JSR303 Bean Validator 定义 -->
+    <bean id="validator"
+        class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+        
+	<context:component-scan base-package="cn.xxh.gold.sys.controller">
+	 </context:component-scan>
+	<mvc:annotation-driven />
+	
+	<!-- 页面资源 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<description>视图模式配置</description>
+		<property name="prefix" value="/WEB-INF/view/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	<!-- 静态资源映射 -->
+	<mvc:resources mapping="/static/**" location="/static/" cache-period="31536000"  />
+	
+	<!-- common-fileupload -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8" />
+		<!-- 文件大小最大值 -->
+		<property name="maxUploadSize" value="10485760000" />
+		<!-- 内存中的最大值 -->
+		<property name="maxInMemorySize" value="40960" />
+	</bean>
+    
+    <!-- springMvc 全局异常配置 -->
+	<bean id="handlerExceptionResolver"
+		class="cn.xxh.gold.exception.CustomExceptionHandler" />
+
+	<!-- 拦截器配置 -->
+	<mvc:interceptors>
+		<bean class="cn.xxh.gold.interceptor.LogInterceptor" />
+	</mvc:interceptors>
+   
+</beans>

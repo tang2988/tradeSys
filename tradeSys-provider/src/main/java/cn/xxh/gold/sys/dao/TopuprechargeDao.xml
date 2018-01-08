@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.xxh.gold.sys.dao.TopuprechargeDao">
+
+	<insert id="rechargeRecord"   parameterType="cn.xxh.gold.sys.entity.Topuprecharge" useGeneratedKeys="true" keyProperty="rechargeId">
+		INSERT INTO t_topuprecharge
+		(banklistId,recharmoney,UserId,rechargeTime,succeedTime,rechargeStatus,errorTime)
+		VALUES(#{banklistId},#{recharmoney},#{UserId},#{rechargeTime},#{succeedTime},#{rechargeStatus},#{errorTime})
+	</insert>
+
+	<update id="StatusAndTime">
+		update t_topuprecharge SET
+		succeedTime=#{succeedTime},rechargeStatus=#{rechargeStatus} where
+		rechargeId =#{rechargeId}
+	</update>
+
+	<update id="updateStatusAndTime">
+		update t_topuprecharge SET
+		errorTime=#{errorTime},rechargeStatus=#{rechargeStatus} where
+		rechargeId =#{rechargeId}
+	</update>
+
+	<select id="findById" resultType="cn.xxh.gold.sys.entity.Topuprecharge">
+		select * from t_topuprecharge
+		where rechargeId = #{rechargeId}
+	</select>
+	
+	<select id="findTopuprechargePage" resultType="cn.xxh.gold.sys.entity.Topuprecharge">
+		select * from t_topuprecharge LIMIT #{offset},#{pagesize}
+	</select>
+	
+	<select id="findCount" resultType="java.lang.Long">
+		select count(1) from t_topuprecharge
+	</select>
+
+
+</mapper>

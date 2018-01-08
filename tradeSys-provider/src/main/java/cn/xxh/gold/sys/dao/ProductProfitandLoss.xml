@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.xxh.gold.sys.dao.ProductProfitandLossDao">
+
+	<select id="findProductProfitandLossByProductId" resultType="cn.xxh.gold.sys.entity.ProductProfitandLoss">
+		select * from t_productProfitandLoss where productId = #{productId}
+	</select>
+
+
+	<update id="ModifyProductData">
+		update t_productprofitandloss SET productName=#{productName},ExpectedAnnualizedInterestRate=#{ExpectedAnnualizedInterestRate},ActivityPlusInterest=#{ActivityPlusInterest},productDeadline=#{productDeadline},sumofMoneyPurchaseddecimal=#{sumofMoneyPurchaseddecimal},productStatus=#{productStatus} WHERE productId =#{productId} 
+ 
+		
+	</update>
+	
+	<delete id="deleteProductProfitandLoss">
+		delete  FROM t_productprofitandloss WHERE  productId = #{productId}
+		
+	</delete>
+	
+	<insert id="addProductProfitandLoss">
+		INSERT INTO t_productprofitandloss(productName,ExpectedAnnualizedInterestRate,ActivityPlusInterest,productDeadline,sumofMoneyPurchaseddecimal,productStatus)VALUES(#{productName},#{ExpectedAnnualizedInterestRate},#{ActivityPlusInterest},#{productDeadline},#{sumofMoneyPurchaseddecimal},#{productStatus})
+		
+	</insert>
+	
+	<select id="findByStatus" resultType="cn.xxh.gold.sys.entity.ProductProfitandLoss">
+		select * from t_productprofitandloss WHERE productStatus = 10
+	
+	</select>
+	
+	<select id="findByStatusAndPage" resultType="cn.xxh.gold.sys.entity.ProductProfitandLoss">
+		select * from t_productprofitandloss WHERE productStatus = 10
+	
+	</select>
+	
+	<select id="findByPage" resultType="cn.xxh.gold.sys.entity.ProductProfitandLoss">
+		select * from t_productprofitandloss where productStatus = 10 LIMIT #{offset},#{pagesize}
+
+	</select>
+	
+	<select id="findByPageAndhsdgold" resultType="cn.xxh.gold.sys.entity.ProductProfitandLoss">
+		select * from t_productprofitandloss LIMIT #{offset},#{pagesize}
+
+	</select>
+	
+	<select id="findCount" resultType="java.lang.Long">
+		select count(1) from t_productprofitandloss 
+
+	</select>
+	
+	
+	
+	
+</mapper>
